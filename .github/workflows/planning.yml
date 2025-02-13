@@ -1,0 +1,40 @@
+name: planning
+
+on:
+  push:
+    branches: ["planning"]
+    paths:
+      - "models/planning/**"
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: ["*"]
+    paths:
+      - "models/planning/**"
+  workflow_call:
+    secrets:
+      CI_TOKEN:
+        required: true
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: set up credentials
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.CI_TOKEN }}
+      - name: checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: checkout submodules
+        run: git submodule update --init --force --recursive
+      - name: set up environment
+        uses: c4patino/actions/.github/actions/setup-python@main
+      - name: install dependencies
+        run: poetry install
+      - name: run planning tests
+        run: (eval $(poetry env activate) && cd ./models/planning && python -m unittest -b)
+
