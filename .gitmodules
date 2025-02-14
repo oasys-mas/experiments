@@ -1,0 +1,3 @@
+[submodule "free-range-zoo"]
+	path = free-range-zoo
+	url = git@github.com:oasys-mas/dev-free-range-zoo.git
