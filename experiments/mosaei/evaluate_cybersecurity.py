@@ -10,6 +10,7 @@ from datetime import datetime, UTC
 
 from free_range_zoo.envs import cybersecurity_v0
 from free_range_zoo.wrappers.action_task import action_mapping_wrapper_v0
+from free_range_zoo.wrappers.space_validator import space_validator_wrapper_v0
 from free_range_zoo.envs.cybersecurity.baselines import RandomBaseline
 
 warnings.simplefilter('ignore', UserWarning)
@@ -77,6 +78,7 @@ def test() -> None:
     )
 
     env = action_mapping_wrapper_v0(env)
+    env = space_validator_wrapper_v0(env)
     observation, _ = env.reset(seed=args.seed)
 
     agents = {}
